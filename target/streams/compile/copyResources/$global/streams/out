@@ -1,0 +1,4 @@
+[0m[[0m[0mdebug[0m] [0m[0mCopy resource mappings: [0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/logback.xml,/home/jamesl/Desktop/csc750proj2/cryto-exchange/target/scala-2.12/classes/logback.xml)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/application.conf,/home/jamesl/Desktop/csc750proj2/cryto-exchange/target/scala-2.12/classes/application.conf)[0m
+[0m[[0m[0mdebug[0m] [0m[0m	(/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes,/home/jamesl/Desktop/csc750proj2/cryto-exchange/target/scala-2.12/classes/routes)[0m
