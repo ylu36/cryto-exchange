@@ -4,7 +4,7 @@
 		module="cryto-exchange_2.12"
 		revision="1.0-SNAPSHOT"
 		status="integration"
-		publication="20180923130114"
+		publication="20180923172834"
 	>
 		<description>
 		cryto-exchange
@@ -50,5 +50,9 @@
 		<dependency org="com.typesafe.play" name="play-logback_2.12" rev="2.6.18" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.play" name="play-akka-http-server_2.12" rev="2.6.18" conf="compile->default(compile)"/>
 		<dependency org="com.typesafe.play" name="play-guice_2.12" rev="2.6.18" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.play" name="play-java-jdbc_2.12" rev="2.6.18" conf="compile->default(compile)"/>
+		<dependency org="org.xerial" name="sqlite-jdbc" rev="3.23.1" conf="compile->default(compile)"/>
+		<dependency org="com.typesafe.akka" name="akka-actor_2.12" rev="2.5.16" conf="compile->default(compile)"/>
+		<dependency org="com.google.code.gson" name="gson" rev="2.8.5" conf="compile->default(compile)"/>
 	</dependencies>
 </ivy-module>
