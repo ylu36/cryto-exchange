@@ -1,4 +1,4 @@
 package actors;
-public class userActorProtol {
+public class userActorProtocol {
     
 }

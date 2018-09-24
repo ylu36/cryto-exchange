@@ -1,4 +1,4 @@
 package actors;
-public class marketActorProtol {
+public class marketActorProtocol {
     
 }
