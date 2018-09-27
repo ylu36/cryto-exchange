@@ -1,2 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:52:1: missing return statement[0m
-[0m[[0m[31merror[0m] [0m[0m    }[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:57:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   variable FutureConverters[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class controllers.ExchangeController[0m
+[0m[[0m[31merror[0m] [0m[0m        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer("name", 10), 1000))[0m
