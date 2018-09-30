@@ -1,6 +1,8 @@
 package actors;
-import java.util.*;
+import akka.actor.ActorRef;
+import akka.pattern.Patterns;
 import play.db.*;
+import java.util.*;
 import java.sql.*;
 import java.io.*;
 import java.util.concurrent.CompletableFuture;
@@ -15,7 +17,7 @@ public class UserActorProtocol {
         String offerId;
         int amount, rate;
         String message;
-        public PlaceOffer(Database db, int maxrate, int buyAmount, int balanceUSD) {
+        public PlaceOffer(Database db, ActorRef marketActor, int maxrate, int buyAmount, int balanceUSD) {
             this.buyAmount = buyAmount;
             this.maxrate = maxrate;
             this.balanceUSD = balanceUSD;
@@ -36,6 +38,7 @@ public class UserActorProtocol {
                     offerId = rs.getString("offerID");
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
+                    // System.out.println(offerId+'\t'+amount +'\t'+rate);
                     if(amount > 0) {
                         int num = Math.min(buyAmount, amount);
                         List<Integer> list = Arrays.asList(num, rate);
@@ -55,9 +58,20 @@ public class UserActorProtocol {
                 message = "not enough balance";
                 return;
             }
-            // FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactions(db), 1000))
-            //             .thenApply(response -> ok((String) response));
-            
+
+            // send HOLD request to marketActor
+            for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
+            {
+                String id = entry.getKey();
+                int amount = entry.getValue().get(0);
+                sendHoldRequest(db, marketActor, id, amount);
+            }
+                        
+        }
+
+        public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {
+            Patterns.ask(marketActor, new Hold(db, offerId, amount), 1000);
+            return true;
         }
     }
 }

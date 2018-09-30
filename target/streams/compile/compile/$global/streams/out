@@ -1,2 +1,2 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:49:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m            message = "sdsfs"[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:17:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m                query = "drop table orderbook;"[0m

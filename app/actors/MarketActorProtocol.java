@@ -6,13 +6,72 @@ import java.io.*;
 public class MarketActorProtocol {
     public static class Hold {
         public final String offerId;
-        public final int amount;
-        public Hold(String offerId, int amount) {
+        public int amount, total;
+        int balance;
+        Statement stmt;
+        public Hold(Database db, String offerId, int amount) {
             this.offerId = offerId;
             this.amount = amount;
+            String query = "SELECT * FROM orderbook WHERE offerID = '" + offerId + "';";
+            try {
+                Connection conn = db.getConnection();
+                stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {       
+                    total = rs.getInt("amount");
+                }       
+                conn.close();
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+            }
+            System.out.println("called he34re"); 
+            // update(db, offerId, amount);  
+            // print(db, offerId, amount);
+        }
+
+        public void update(Database db, String offerId, int amount) {
+            String query1 = "UPDATE orderbook SET amount = " + balance + " WHERE offerID = '" + offerId + "';";
+
+            try {                        
+                balance = total-amount;
+                Connection conn = db.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query1);                                              
+                pstmt.executeUpdate();
+                System.out.println("yodated"); 
+                conn.close();
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+            }
+        }
+
+
+        public void print(Database db, String offerId, int amount) {
+            try {
+                String query = "select * from orderbook;";
+                Connection conn = db.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {       
+                    String s = rs.getString("offerID");
+                    System.out.println(s + rs.getInt("amount"));
+                }   
+                conn.close();
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+            }
         }
     }
-
+    
+    // System.out.println(query);
+    // stmt.executeQuery(query);
+    // // rs = stmt.executeQuery("select * from orderbook;");
+    // // while(rs.next()) {
+    // //     System.out.println("after hold:"+rs.getInt("amount"));
+    // // }   
+    // System.out.println("balance is "+balance);     
     public static class Confirm {
         public final String offerId;
         public final int amount;

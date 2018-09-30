@@ -38,11 +38,13 @@ public class ExchangeController extends Controller {
         balanceUSD = 0;
         this.userActor = system.actorOf(UserActor.getProps());
         this.marketActor = system.actorOf(MarketActor.getProps());
+        String dropTable = "DROP TABLE orderbook;";
         String createOrderbook = "CREATE TABLE IF NOT EXISTS orderbook (rate integer, amount integer, offerID PRIMARY KEY);";
-        String initialize = "INSERT INTO orderbook (rate, amount, offerID) VALUES (100.00, 5.0, '431671cb'), (80.00, 2.0, '16b961ed'), (50.00, 12.0, '1e06381d');";
+        String initialize = "INSERT INTO orderbook (rate, amount, offerID) VALUES (100, 5, '431671cb'), (80, 2, '16b961ed'), (50, 12, '1e06381d');";
         try {
             Connection conn = db.getConnection();
             Statement stmt = conn.createStatement();
+            stmt.execute(dropTable);
             stmt.execute(createOrderbook);
             stmt.execute(initialize);
         } catch (Exception e) {
@@ -87,7 +89,7 @@ public class ExchangeController extends Controller {
     }
 
     public CompletionStage<Result> buy(int maxrate, int amount) {
-        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, maxrate, amount, balanceUSD), 1000))
+        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, marketActor, maxrate, amount, balanceUSD), 1000))
         .thenApply(response -> ok((String)response));
     } 
 
