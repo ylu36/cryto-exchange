@@ -13,8 +13,9 @@ import actors.UserActorProtocol.*;
 
 public class UserActor extends AbstractActor {
     private static final ALogger logger = Logger.of(UserActor.class);
+    public static int USD;
     public UserActor() {
-
+        this.USD = 0;
     }
     public static Props getProps() {
         return Props.create(UserActor.class);

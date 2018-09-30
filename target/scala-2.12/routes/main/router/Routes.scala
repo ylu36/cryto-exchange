@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sat Sep 29 20:46:20 EDT 2018
+// @DATE:Sun Sep 30 00:52:29 EDT 2018
 
 package router
 
@@ -47,8 +47,8 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """assets/""" + "$" + """file<.+>""", """controllers.Assets.versioned(path:String = "/public", file:Asset)"""),
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """addbalance/usd/""" + "$" + """amount<[^/]+>""", """controllers.ExchangeController.addbalance(amount:Integer)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """getbalance""", """controllers.ExchangeController.getbalance"""),
-    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """transactions""", """controllers.ExchangeController.gettranactions"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers""", """controllers.ExchangeController.getselloffers"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers/""" + "$" + """offerid<[^/]+>""", """controllers.ExchangeController.getsellofferbyid(offerid:String)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -128,29 +128,11 @@ class Routes(
     )
   )
 
-  // @LINE:13
-  private[this] lazy val controllers_ExchangeController_gettranactions4_route = Route("GET",
-    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("transactions")))
-  )
-  private[this] lazy val controllers_ExchangeController_gettranactions4_invoker = createInvoker(
-    ExchangeController_2.gettranactions,
-    play.api.routing.HandlerDef(this.getClass.getClassLoader,
-      "router",
-      "controllers.ExchangeController",
-      "gettranactions",
-      Nil,
-      "GET",
-      this.prefix + """transactions""",
-      """""",
-      Seq()
-    )
-  )
-
   // @LINE:14
-  private[this] lazy val controllers_ExchangeController_getselloffers5_route = Route("GET",
+  private[this] lazy val controllers_ExchangeController_getselloffers4_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("selloffers")))
   )
-  private[this] lazy val controllers_ExchangeController_getselloffers5_invoker = createInvoker(
+  private[this] lazy val controllers_ExchangeController_getselloffers4_invoker = createInvoker(
     ExchangeController_2.getselloffers,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -159,6 +141,24 @@ class Routes(
       Nil,
       "GET",
       this.prefix + """selloffers""",
+      """GET     /transactions               controllers.ExchangeController.gettranactions""",
+      Seq()
+    )
+  )
+
+  // @LINE:15
+  private[this] lazy val controllers_ExchangeController_getsellofferbyid5_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("selloffers/"), DynamicPart("offerid", """[^/]+""",true)))
+  )
+  private[this] lazy val controllers_ExchangeController_getsellofferbyid5_invoker = createInvoker(
+    ExchangeController_2.getsellofferbyid(fakeValue[String]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "getsellofferbyid",
+      Seq(classOf[String]),
+      "GET",
+      this.prefix + """selloffers/""" + "$" + """offerid<[^/]+>""",
       """""",
       Seq()
     )
@@ -191,16 +191,16 @@ class Routes(
         controllers_ExchangeController_getbalance3_invoker.call(ExchangeController_2.getbalance)
       }
   
-    // @LINE:13
-    case controllers_ExchangeController_gettranactions4_route(params@_) =>
+    // @LINE:14
+    case controllers_ExchangeController_getselloffers4_route(params@_) =>
       call { 
-        controllers_ExchangeController_gettranactions4_invoker.call(ExchangeController_2.gettranactions)
+        controllers_ExchangeController_getselloffers4_invoker.call(ExchangeController_2.getselloffers)
       }
   
-    // @LINE:14
-    case controllers_ExchangeController_getselloffers5_route(params@_) =>
-      call { 
-        controllers_ExchangeController_getselloffers5_invoker.call(ExchangeController_2.getselloffers)
+    // @LINE:15
+    case controllers_ExchangeController_getsellofferbyid5_route(params@_) =>
+      call(params.fromPath[String]("offerid", None)) { (offerid) =>
+        controllers_ExchangeController_getsellofferbyid5_invoker.call(ExchangeController_2.getsellofferbyid(offerid))
       }
   }
 }

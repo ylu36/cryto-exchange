@@ -9,8 +9,6 @@ import java.util.TimerTask;
 import actors.MarketActorProtocol.*;
 public class MarketActor extends AbstractActor {
     private static final ALogger logger = Logger.of(MarketActor.class);
-    public String offerId;
-    public int amount;
     private List<String> waitingForConfirm;
     public Map<String, List<Integer>> orderbook = new HashMap<>();
 
@@ -30,10 +28,13 @@ public class MarketActor extends AbstractActor {
         }).match(Confirm.class, confirm -> {
             logger.info("Confirm request received...");
             System.out.println("in confirm");
-        }).match(Offerbook.class, offerbook -> {
+        }).match(GetSellOfferById.class, getSellOfferById -> {
+            int rate = getSellOfferById.rate;
+            int amount = getSellOfferById.amount;
+            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount), self());
+        }).match(GetSellOffers.class, getSellerOffers -> {
             logger.info("Confirm request received...");
-            System.out.println("in offerbook");
-            String reply = offerbook.getSellOffers();
+            String reply = getSellerOffers.offerIDs.toString();
             sender().tell(reply, self());
         }).build();
     }

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sat Sep 29 20:46:20 EDT 2018
+// @DATE:Sun Sep 30 00:52:29 EDT 2018
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -29,22 +29,22 @@ package controllers.javascript {
       """
     )
   
+    // @LINE:15
+    def getsellofferbyid: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.getsellofferbyid",
+      """
+        function(offerid0) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "selloffers/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("offerid", offerid0))})
+        }
+      """
+    )
+  
     // @LINE:11
     def addbalance: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.ExchangeController.addbalance",
       """
         function(amount0) {
           return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "addbalance/usd/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[Integer]].javascriptUnbind + """)("amount", amount0))})
-        }
-      """
-    )
-  
-    // @LINE:13
-    def gettranactions: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.ExchangeController.gettranactions",
-      """
-        function() {
-          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "transactions"})
         }
       """
     )
