@@ -23,10 +23,10 @@ public class UserActor extends AbstractActor {
     @Override
 	public Receive createReceive() {
         return receiveBuilder()
-        .match(PlaceOffer.class, placeOffer->{
-            logger.info("");
-            System.out.println("in user actor");
-            String reply = "hello " + placeOffer.offerId + " = " + placeOffer.amount;
+        .match(PlaceOffer.class, placeOffer-> {
+            logger.info("in place offer");
+            System.out.println("in user actor (placeOffer)");
+            String reply = placeOffer.message;
             sender().tell(reply, self());
         }).build();
     }

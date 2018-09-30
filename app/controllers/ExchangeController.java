@@ -86,6 +86,11 @@ public class ExchangeController extends Controller {
         .thenApply(response -> ok((ObjectNode)parseSellOfferById((String)response)));
     }
 
+    public CompletionStage<Result> buy(int maxrate, int amount) {
+        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, maxrate, amount, balanceUSD), 1000))
+        .thenApply(response -> ok((String)response));
+    } 
+
     private ObjectNode parseSellOffers(String response) {
         ObjectNode result = Json.newObject();        
         result.put("status", "success");

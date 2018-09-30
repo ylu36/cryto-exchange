@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 11:47:37 EDT 2018
+// @DATE:Sun Sep 30 15:19:26 EDT 2018
 
 package router
 
@@ -51,6 +51,7 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """transactions/""" + "$" + """transactionID<[^/]+>""", """controllers.ExchangeController.gettranactionbyid(transactionID:Integer)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers""", """controllers.ExchangeController.getselloffers"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers/""" + "$" + """offerid<[^/]+>""", """controllers.ExchangeController.getsellofferbyid(offerid:String)"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """buy/""" + "$" + """maxrate<[^/]+>/""" + "$" + """amount<[^/]+>""", """controllers.ExchangeController.buy(maxrate:Integer, amount:Integer)"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -202,6 +203,24 @@ class Routes(
     )
   )
 
+  // @LINE:17
+  private[this] lazy val controllers_ExchangeController_buy8_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("buy/"), DynamicPart("maxrate", """[^/]+""",true), StaticPart("/"), DynamicPart("amount", """[^/]+""",true)))
+  )
+  private[this] lazy val controllers_ExchangeController_buy8_invoker = createInvoker(
+    ExchangeController_2.buy(fakeValue[Integer], fakeValue[Integer]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "buy",
+      Seq(classOf[Integer], classOf[Integer]),
+      "POST",
+      this.prefix + """buy/""" + "$" + """maxrate<[^/]+>/""" + "$" + """amount<[^/]+>""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -251,6 +270,12 @@ class Routes(
     case controllers_ExchangeController_getsellofferbyid7_route(params@_) =>
       call(params.fromPath[String]("offerid", None)) { (offerid) =>
         controllers_ExchangeController_getsellofferbyid7_invoker.call(ExchangeController_2.getsellofferbyid(offerid))
+      }
+  
+    // @LINE:17
+    case controllers_ExchangeController_buy8_route(params@_) =>
+      call(params.fromPath[Integer]("maxrate", None), params.fromPath[Integer]("amount", None)) { (maxrate, amount) =>
+        controllers_ExchangeController_buy8_invoker.call(ExchangeController_2.buy(maxrate, amount))
       }
   }
 }

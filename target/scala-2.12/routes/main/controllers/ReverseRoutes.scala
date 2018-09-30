@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 11:47:37 EDT 2018
+// @DATE:Sun Sep 30 15:19:26 EDT 2018
 
 import play.api.mvc.Call
 
@@ -46,6 +46,12 @@ package controllers {
     def gettranactionbyid(transactionID:Integer): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "transactions/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[Integer]].unbind("transactionID", transactionID)))
+    }
+  
+    // @LINE:17
+    def buy(maxrate:Integer, amount:Integer): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "buy/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[Integer]].unbind("maxrate", maxrate)) + "/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[Integer]].unbind("amount", amount)))
     }
   
     // @LINE:12

@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 11:47:37 EDT 2018
+// @DATE:Sun Sep 30 15:19:26 EDT 2018
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -65,6 +65,16 @@ package controllers.javascript {
       """
         function(transactionID0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "transactions/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[Integer]].javascriptUnbind + """)("transactionID", transactionID0))})
+        }
+      """
+    )
+  
+    // @LINE:17
+    def buy: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.buy",
+      """
+        function(maxrate0,amount1) {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "buy/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[Integer]].javascriptUnbind + """)("maxrate", maxrate0)) + "/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[Integer]].javascriptUnbind + """)("amount", amount1))})
         }
       """
     )
