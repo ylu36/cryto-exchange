@@ -1,2 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:7:1: variable offerId might not have been initialized[0m
-[0m[[0m[31merror[0m] [0m[0m            this.offerId = offerId;[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActor.java:50:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   variable reply[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class actors.MarketActor[0m
+[0m[[0m[31merror[0m] [0m[0m            sender().tell(reply, self());[0m

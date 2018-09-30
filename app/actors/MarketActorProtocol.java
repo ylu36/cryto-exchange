@@ -2,6 +2,7 @@ package actors;
 import java.util.*;
 import play.db.*;
 import java.sql.*;
+import java.io.*;
 public class MarketActorProtocol {
     public static class Hold {
         public final String offerId;
@@ -33,13 +34,15 @@ public class MarketActorProtocol {
                     offerIDs.add(rs.getString("offerID"));
                 }              
             } catch (Exception e) {
-                System.out.println(e);
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
             }
         }
     }
     public static class GetSellOfferById {
         int amount;
         int rate;
+        String message;
         public GetSellOfferById(Database db, String offerID) {
             String query = "SELECT * FROM orderbook WHERE offerID = '" + offerID + "';";
             try {
@@ -50,8 +53,54 @@ public class MarketActorProtocol {
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
                 }
+                message = "";
             } catch (Exception e) {
-                System.out.println(e);
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                message = sw.toString();
+            }
+        }
+    }
+
+    public static class GetTransactions {
+        List<Integer> transactions;
+        public GetTransactions(Database db) {
+            transactions = new ArrayList<>();
+            String query = "SELECT id FROM transactions;";
+
+            try {
+                Connection conn = db.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {
+                    transactions.add(rs.getInt("id"));
+                }
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+            }
+        }
+    }
+
+    public static class GetTransactionById {
+        int amount;
+        int rate;
+        String message;
+        public GetTransactionById(Database db, int id) {
+            String query = "SELECT * FROM transactions where id=" + id + ";";
+
+            try {
+                Connection conn = db.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {
+                    amount = rs.getInt("amount");
+                    rate = rs.getInt("rate");
+                }
+            } catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+                message = sw.toString();
             }
         }
     }

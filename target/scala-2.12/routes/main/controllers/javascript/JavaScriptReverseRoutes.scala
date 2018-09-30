@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 00:52:29 EDT 2018
+// @DATE:Sun Sep 30 11:47:37 EDT 2018
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -19,22 +19,22 @@ package controllers.javascript {
     }
 
   
-    // @LINE:12
-    def getbalance: JavaScriptReverseRoute = JavaScriptReverseRoute(
-      "controllers.ExchangeController.getbalance",
-      """
-        function() {
-          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "getbalance"})
-        }
-      """
-    )
-  
-    // @LINE:15
+    // @LINE:16
     def getsellofferbyid: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.ExchangeController.getsellofferbyid",
       """
         function(offerid0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "selloffers/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("offerid", offerid0))})
+        }
+      """
+    )
+  
+    // @LINE:13
+    def gettranactions: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.gettranactions",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "transactions"})
         }
       """
     )
@@ -49,12 +49,32 @@ package controllers.javascript {
       """
     )
   
-    // @LINE:14
+    // @LINE:15
     def getselloffers: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.ExchangeController.getselloffers",
       """
         function() {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "selloffers"})
+        }
+      """
+    )
+  
+    // @LINE:14
+    def gettranactionbyid: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.gettranactionbyid",
+      """
+        function(transactionID0) {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "transactions/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[Integer]].javascriptUnbind + """)("transactionID", transactionID0))})
+        }
+      """
+    )
+  
+    // @LINE:12
+    def getbalance: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.getbalance",
+      """
+        function() {
+          return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "getbalance"})
         }
       """
     )

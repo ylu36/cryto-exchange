@@ -65,16 +65,16 @@ public class ExchangeController extends Controller {
         return ok(result);
     }
 
-    // public Result gettranactions() {
-    //     ObjectNode result = Json.newObject();
-    //     result.put("status", "success");
-    //     return ok(result);
-    // }
 
-    // public CompletionStage<Result> gettranactions() {
-    //     return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer("name", 30), 1000))
-    //             .thenApply(response -> ok((String) response));
-    // }
+    public CompletionStage<Result> gettranactions() {   // TODO: not done yet
+        return FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactions(db), 1000))
+                .thenApply(response -> ok((String) response));
+    }
+
+    public CompletionStage<Result> gettranactionbyid(Integer id) {   // TODO: not done yet
+        return FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactionById(db, id), 1000))
+                .thenApply(response -> ok((String) response));
+    }
 
     public CompletionStage<Result> getselloffers() {
         return FutureConverters.toJava(Patterns.ask(marketActor, new GetSellOffers(db), 1000))
@@ -94,10 +94,16 @@ public class ExchangeController extends Controller {
     }
 
     private ObjectNode parseSellOfferById(String response) {
-        ObjectNode result = Json.newObject();        
-        result.put("status", "success");
-        result.put("rate", response.split(" ")[0]);
-        result.put("amount", response.split(" ")[1]);
+        ObjectNode result = Json.newObject();  
+        if(response.split(" ")[2] == "") {      
+            result.put("status", "success");
+            result.put("rate", response.split(" ")[0]);
+            result.put("amount", response.split(" ")[1]);
+        }
+        else {
+            result.put("status", "error");
+            result.put("message", response.split(" ")[2]);
+        }
         return result;
     }
 }

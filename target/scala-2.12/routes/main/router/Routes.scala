@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 00:52:29 EDT 2018
+// @DATE:Sun Sep 30 11:47:37 EDT 2018
 
 package router
 
@@ -47,6 +47,8 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """assets/""" + "$" + """file<.+>""", """controllers.Assets.versioned(path:String = "/public", file:Asset)"""),
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """addbalance/usd/""" + "$" + """amount<[^/]+>""", """controllers.ExchangeController.addbalance(amount:Integer)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """getbalance""", """controllers.ExchangeController.getbalance"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """transactions""", """controllers.ExchangeController.gettranactions"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """transactions/""" + "$" + """transactionID<[^/]+>""", """controllers.ExchangeController.gettranactionbyid(transactionID:Integer)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers""", """controllers.ExchangeController.getselloffers"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers/""" + "$" + """offerid<[^/]+>""", """controllers.ExchangeController.getsellofferbyid(offerid:String)"""),
     Nil
@@ -128,11 +130,47 @@ class Routes(
     )
   )
 
+  // @LINE:13
+  private[this] lazy val controllers_ExchangeController_gettranactions4_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("transactions")))
+  )
+  private[this] lazy val controllers_ExchangeController_gettranactions4_invoker = createInvoker(
+    ExchangeController_2.gettranactions,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "gettranactions",
+      Nil,
+      "GET",
+      this.prefix + """transactions""",
+      """""",
+      Seq()
+    )
+  )
+
   // @LINE:14
-  private[this] lazy val controllers_ExchangeController_getselloffers4_route = Route("GET",
+  private[this] lazy val controllers_ExchangeController_gettranactionbyid5_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("transactions/"), DynamicPart("transactionID", """[^/]+""",true)))
+  )
+  private[this] lazy val controllers_ExchangeController_gettranactionbyid5_invoker = createInvoker(
+    ExchangeController_2.gettranactionbyid(fakeValue[Integer]),
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "gettranactionbyid",
+      Seq(classOf[Integer]),
+      "GET",
+      this.prefix + """transactions/""" + "$" + """transactionID<[^/]+>""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:15
+  private[this] lazy val controllers_ExchangeController_getselloffers6_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("selloffers")))
   )
-  private[this] lazy val controllers_ExchangeController_getselloffers4_invoker = createInvoker(
+  private[this] lazy val controllers_ExchangeController_getselloffers6_invoker = createInvoker(
     ExchangeController_2.getselloffers,
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -141,16 +179,16 @@ class Routes(
       Nil,
       "GET",
       this.prefix + """selloffers""",
-      """GET     /transactions               controllers.ExchangeController.gettranactions""",
+      """""",
       Seq()
     )
   )
 
-  // @LINE:15
-  private[this] lazy val controllers_ExchangeController_getsellofferbyid5_route = Route("GET",
+  // @LINE:16
+  private[this] lazy val controllers_ExchangeController_getsellofferbyid7_route = Route("GET",
     PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("selloffers/"), DynamicPart("offerid", """[^/]+""",true)))
   )
-  private[this] lazy val controllers_ExchangeController_getsellofferbyid5_invoker = createInvoker(
+  private[this] lazy val controllers_ExchangeController_getsellofferbyid7_invoker = createInvoker(
     ExchangeController_2.getsellofferbyid(fakeValue[String]),
     play.api.routing.HandlerDef(this.getClass.getClassLoader,
       "router",
@@ -191,16 +229,28 @@ class Routes(
         controllers_ExchangeController_getbalance3_invoker.call(ExchangeController_2.getbalance)
       }
   
-    // @LINE:14
-    case controllers_ExchangeController_getselloffers4_route(params@_) =>
+    // @LINE:13
+    case controllers_ExchangeController_gettranactions4_route(params@_) =>
       call { 
-        controllers_ExchangeController_getselloffers4_invoker.call(ExchangeController_2.getselloffers)
+        controllers_ExchangeController_gettranactions4_invoker.call(ExchangeController_2.gettranactions)
+      }
+  
+    // @LINE:14
+    case controllers_ExchangeController_gettranactionbyid5_route(params@_) =>
+      call(params.fromPath[Integer]("transactionID", None)) { (transactionID) =>
+        controllers_ExchangeController_gettranactionbyid5_invoker.call(ExchangeController_2.gettranactionbyid(transactionID))
       }
   
     // @LINE:15
-    case controllers_ExchangeController_getsellofferbyid5_route(params@_) =>
+    case controllers_ExchangeController_getselloffers6_route(params@_) =>
+      call { 
+        controllers_ExchangeController_getselloffers6_invoker.call(ExchangeController_2.getselloffers)
+      }
+  
+    // @LINE:16
+    case controllers_ExchangeController_getsellofferbyid7_route(params@_) =>
       call(params.fromPath[String]("offerid", None)) { (offerid) =>
-        controllers_ExchangeController_getsellofferbyid5_invoker.call(ExchangeController_2.getsellofferbyid(offerid))
+        controllers_ExchangeController_getsellofferbyid7_invoker.call(ExchangeController_2.getsellofferbyid(offerid))
       }
   }
 }

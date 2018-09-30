@@ -31,11 +31,22 @@ public class MarketActor extends AbstractActor {
         }).match(GetSellOfferById.class, getSellOfferById -> {
             int rate = getSellOfferById.rate;
             int amount = getSellOfferById.amount;
-            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount), self());
+            String message = getSellOfferById.message;
+            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+" " +message, self());
         }).match(GetSellOffers.class, getSellerOffers -> {
             logger.info("Confirm request received...");
             String reply = getSellerOffers.offerIDs.toString();
             sender().tell(reply, self());
+        }).match(GetTransactions.class, getTransactions -> {
+            logger.info("Confirm request received...");
+            String reply = getTransactions.transactions.toString();
+            sender().tell(reply, self());
+        }).match(GetTransactionById.class, getTransactionById -> {
+            logger.info("Confirm request received...");
+            int amount = getTransactionById.amount;
+            int rate = getTransactionById.rate;
+            String message = getTransactionById.message;
+            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+" " +message, self());
         }).build();
     }
 

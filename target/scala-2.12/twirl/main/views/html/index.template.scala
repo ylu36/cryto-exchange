@@ -32,8 +32,10 @@ object index extends _root_.play.twirl.api.BaseScalaTemplate[play.twirl.api.Html
 
 Seq[Any](format.raw/*2.1*/("""
 """),_display_(/*3.2*/main("Welcome to Play")/*3.25*/ {_display_(Seq[Any](format.raw/*3.27*/("""
-  """),format.raw/*4.3*/("""<h1>Welcome to Play!</h1>
-""")))}),format.raw/*5.2*/("""
+  """),format.raw/*4.3*/("""<h1>HomePage</h1>
+  <h2>Author: Yuanchen Lu </h2>
+  <h2>Email: ylu36@ncsu.edu </h2>
+""")))}),format.raw/*7.2*/("""
 """))
       }
     }
@@ -50,11 +52,11 @@ Seq[Any](format.raw/*2.1*/("""
 
               /*
                   -- GENERATED --
-                  DATE: Sun Sep 23 13:01:14 EDT 2018
+                  DATE: Sun Sep 30 11:49:44 EDT 2018
                   SOURCE: /home/jamesl/Desktop/csc750proj2/cryto-exchange/app/views/index.scala.html
-                  HASH: 101fa511ddebe89cb9bf324b96e228b7b59b8d04
-                  MATRIX: 941->1|1037->4|1064->6|1095->29|1134->31|1163->34|1219->61
-                  LINES: 28->1|33->2|34->3|34->3|34->3|35->4|36->5
+                  HASH: 0304ac8a5c4dcfc5fae1e3ac3112325797b7c0e7
+                  MATRIX: 941->1|1037->4|1064->6|1095->29|1134->31|1163->34|1277->120
+                  LINES: 28->1|33->2|34->3|34->3|34->3|35->4|38->7
                   -- GENERATED --
               */
           

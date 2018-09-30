@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Sun Sep 30 00:52:29 EDT 2018
+// @DATE:Sun Sep 30 11:47:37 EDT 2018
 
 import play.api.mvc.Call
 
@@ -18,16 +18,16 @@ package controllers {
     }
 
   
-    // @LINE:12
-    def getbalance(): Call = {
-      
-      Call("GET", _prefix + { _defaultPrefix } + "getbalance")
-    }
-  
-    // @LINE:15
+    // @LINE:16
     def getsellofferbyid(offerid:String): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "selloffers/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("offerid", offerid)))
+    }
+  
+    // @LINE:13
+    def gettranactions(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "transactions")
     }
   
     // @LINE:11
@@ -36,10 +36,22 @@ package controllers {
       Call("POST", _prefix + { _defaultPrefix } + "addbalance/usd/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[Integer]].unbind("amount", amount)))
     }
   
-    // @LINE:14
+    // @LINE:15
     def getselloffers(): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "selloffers")
+    }
+  
+    // @LINE:14
+    def gettranactionbyid(transactionID:Integer): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "transactions/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[Integer]].unbind("transactionID", transactionID)))
+    }
+  
+    // @LINE:12
+    def getbalance(): Call = {
+      
+      Call("GET", _prefix + { _defaultPrefix } + "getbalance")
     }
   
   }
