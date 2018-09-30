@@ -1,4 +1,3 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:57:1: cannot find symbol[0m
-[0m[[0m[31merror[0m] [0m[0m  symbol:   variable FutureConverters[0m
-[0m[[0m[31merror[0m] [0m[0m  location: class controllers.ExchangeController[0m
-[0m[[0m[31merror[0m] [0m[0m        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer("name", 10), 1000))[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:68:1: incompatible types: java.lang.Object cannot be converted to java.lang.String[0m
+[0m[[0m[31merror[0m] [0m[0m        .thenApply(response -> ok((ObjectNode)parseSellOffers(response)));[0m
+[0m[[0m[0minfo[0m] [0m[0mSome messages have been simplified; recompile with -Xdiags:verbose to get full output[0m

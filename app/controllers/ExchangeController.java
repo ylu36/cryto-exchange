@@ -17,9 +17,11 @@ import play.mvc.Controller;
 import play.mvc.Result;
 import actors.UserActor;
 import actors.UserActorProtocol.*;
+import actors.MarketActor;
+import actors.MarketActorProtocol.*;
 public class ExchangeController extends Controller {
     final ActorSystem system;
-    final ActorRef userActor;
+    final ActorRef userActor, marketActor;
     private static final ALogger logger = Logger.of(ExchangeController.class);
     private static int balanceUSD, balanceBTC;
 
@@ -31,6 +33,7 @@ public class ExchangeController extends Controller {
         this.balanceUSD = 0;
         this.balanceBTC = 0;
         this.userActor = system.actorOf(UserActor.getProps());
+        this.marketActor = system.actorOf(MarketActor.getProps());
     }
     
     public Result addbalance(Integer amount) {
@@ -55,7 +58,22 @@ public class ExchangeController extends Controller {
     // }
 
     public CompletionStage<Result> gettranactions() {
-        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer("name", 10), 1000))
+        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer("name", 30), 1000))
                 .thenApply(response -> ok((String) response));
+    }
+
+    public CompletionStage<Result> getselloffers() {
+        ObjectNode result = Json.newObject();
+        return FutureConverters.toJava(Patterns.ask(marketActor, new Offerbook(), 1000))
+        .thenApply(response -> ok((ObjectNode)parseSellOffers((String)response)));
+        // .thenApply(response -> ok((ObjectNode) result));
+    }
+
+    private ObjectNode parseSellOffers(String response) {
+        ObjectNode result = Json.newObject();        
+        result.put("status", "success");
+        result.put("offer", response.replaceAll("\t",", "));
+        System.out.println("hrere");
+        return result;
     }
 }

@@ -11,3 +11,4 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 POST    /addbalance/usd/:amount     controllers.ExchangeController.addbalance(amount: Integer)
 GET     /getbalance                 controllers.ExchangeController.getbalance
 GET     /transactions               controllers.ExchangeController.gettranactions
+GET     /selloffers                 controllers.ExchangeController.getselloffers

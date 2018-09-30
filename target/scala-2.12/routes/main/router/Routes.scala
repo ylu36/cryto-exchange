@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Mon Sep 24 16:18:50 EDT 2018
+// @DATE:Sat Sep 29 20:46:20 EDT 2018
 
 package router
 
@@ -48,6 +48,7 @@ class Routes(
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """addbalance/usd/""" + "$" + """amount<[^/]+>""", """controllers.ExchangeController.addbalance(amount:Integer)"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """getbalance""", """controllers.ExchangeController.getbalance"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """transactions""", """controllers.ExchangeController.gettranactions"""),
+    ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers""", """controllers.ExchangeController.getselloffers"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -145,6 +146,24 @@ class Routes(
     )
   )
 
+  // @LINE:14
+  private[this] lazy val controllers_ExchangeController_getselloffers5_route = Route("GET",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("selloffers")))
+  )
+  private[this] lazy val controllers_ExchangeController_getselloffers5_invoker = createInvoker(
+    ExchangeController_2.getselloffers,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "getselloffers",
+      Nil,
+      "GET",
+      this.prefix + """selloffers""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -176,6 +195,12 @@ class Routes(
     case controllers_ExchangeController_gettranactions4_route(params@_) =>
       call { 
         controllers_ExchangeController_gettranactions4_invoker.call(ExchangeController_2.gettranactions)
+      }
+  
+    // @LINE:14
+    case controllers_ExchangeController_getselloffers5_route(params@_) =>
+      call { 
+        controllers_ExchangeController_getselloffers5_invoker.call(ExchangeController_2.getselloffers)
       }
   }
 }
