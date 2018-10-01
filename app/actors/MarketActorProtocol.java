@@ -8,26 +8,49 @@ public class MarketActorProtocol {
         public final String offerId;
         public int amount, total;
         int balance;
-        Statement stmt;
+        String message;
         public Hold(Database db, String offerId, int amount) {
             this.offerId = offerId;
             this.amount = amount;
+            Connection conn = null;
             String query = "SELECT * FROM orderbook WHERE offerID = '" + offerId + "';";
             try {
-                Connection conn = db.getConnection();
-                stmt = conn.createStatement();
+                conn = db.getConnection();
+                Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while(rs.next()) {       
                     total = rs.getInt("amount");
                 }       
-                conn.close();
+                
+                message = "success";
             } catch (Exception e) {
+                message = "error";
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
             }
-            System.out.println("called he34re"); 
             // update(db, offerId, amount);  
             // print(db, offerId, amount);
+            balance = total - amount;
+
+            // get BTC/USD rate
+            int rate;
+            if(offerId == "431671cb")
+                rate = 100;
+            else if(offerId == "16b961ed")
+                rate = 80;
+            else 
+                rate = 50;
+
+            // insert into transactions table
+            insertIntoTransaction(db, offerId, amount, rate);
         }
 
         public void update(Database db, String offerId, int amount) {
@@ -59,19 +82,27 @@ public class MarketActorProtocol {
                 }   
                 conn.close();
             } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+                e.printStackTrace();
+            }
+        }
+
+        public void insertIntoTransaction(Database db, String offerId, int amount, int rate) {
+            try {
+                String query = "INSERT INTO transactions (offerID, amount, rate) values (?,?,?);";
+                Connection conn = db.getConnection();
+                PreparedStatement pstmt = conn.prepareStatement(query);
+                pstmt.setString(1, offerId);
+                pstmt.setInt(2, amount);
+                pstmt.setInt(3, rate);
+                pstmt.executeUpdate();
+                conn.close();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
     
-    // System.out.println(query);
-    // stmt.executeQuery(query);
-    // // rs = stmt.executeQuery("select * from orderbook;");
-    // // while(rs.next()) {
-    // //     System.out.println("after hold:"+rs.getInt("amount"));
-    // // }   
-    // System.out.println("balance is "+balance);     
+    
     public static class Confirm {
         public final String offerId;
         public final int amount;
@@ -92,9 +123,9 @@ public class MarketActorProtocol {
                 while(rs.next()) {
                     offerIDs.add(rs.getString("offerID"));
                 }              
+                conn.close();
             } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+                e.printStackTrace();
             }
         }
     }
@@ -112,11 +143,11 @@ public class MarketActorProtocol {
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
                 }
-                message = "";
+                message = "success";
+                conn.close();
             } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                message = sw.toString();
+                e.printStackTrace();
+                message = "error";
             }
         }
     }
@@ -134,9 +165,9 @@ public class MarketActorProtocol {
                 while(rs.next()) {
                     transactions.add(rs.getInt("id"));
                 }
+                conn.close();
             } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+                e.printStackTrace();
             }
         }
     }
@@ -156,10 +187,11 @@ public class MarketActorProtocol {
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
                 }
+                message = "success";
+                conn.close();
             } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
-                message = sw.toString();
+                e.printStackTrace();
+                message = "error";
             }
         }
     }

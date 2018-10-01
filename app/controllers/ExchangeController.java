@@ -38,14 +38,16 @@ public class ExchangeController extends Controller {
         balanceUSD = 0;
         this.userActor = system.actorOf(UserActor.getProps());
         this.marketActor = system.actorOf(MarketActor.getProps());
-        String dropTable = "DROP TABLE orderbook;";
+        String dropTable = "DROP TABLE if exists transactions;";
         String createOrderbook = "CREATE TABLE IF NOT EXISTS orderbook (rate integer, amount integer, offerID PRIMARY KEY);";
+        String createTransactions = "CREATE TABLE IF NOT EXISTS transactions (id integer PRIMARY KEY AUTOINCREMENT, offerID String, amount integer, rate integer);";
         String initialize = "INSERT INTO orderbook (rate, amount, offerID) VALUES (100, 5, '431671cb'), (80, 2, '16b961ed'), (50, 12, '1e06381d');";
         try {
             Connection conn = db.getConnection();
             Statement stmt = conn.createStatement();
             stmt.execute(dropTable);
             stmt.execute(createOrderbook);
+            stmt.execute(createTransactions);
             stmt.execute(initialize);
         } catch (Exception e) {
             System.out.println("mauisdgf"+e);
@@ -102,7 +104,8 @@ public class ExchangeController extends Controller {
 
     private ObjectNode parseSellOfferById(String response) {
         ObjectNode result = Json.newObject();  
-        if(response.split(" ")[2] == "") {      
+        System.out.println(response);
+        if(response.split(" ")[2].equals("success")) {      
             result.put("status", "success");
             result.put("rate", response.split(" ")[0]);
             result.put("amount", response.split(" ")[1]);

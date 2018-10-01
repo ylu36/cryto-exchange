@@ -24,7 +24,7 @@ public class MarketActor extends AbstractActor {
             logger.info("Hold request received...");
             System.out.println("in hold");
             // boolean trial = canHold(hold.offerId, hold.amount);
-            sender().tell("hello", self());
+            sender().tell(hold.message, self());
         }).match(Confirm.class, confirm -> {
             logger.info("Confirm request received...");
             System.out.println("in confirm");
@@ -32,7 +32,7 @@ public class MarketActor extends AbstractActor {
             int rate = getSellOfferById.rate;
             int amount = getSellOfferById.amount;
             String message = getSellOfferById.message;
-            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+" " +message, self());
+            sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+ " " +message, self());
         }).match(GetSellOffers.class, getSellerOffers -> {
             logger.info("Confirm request received...");
             String reply = getSellerOffers.offerIDs.toString();

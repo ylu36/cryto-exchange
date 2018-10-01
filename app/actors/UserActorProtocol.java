@@ -5,10 +5,16 @@ import play.db.*;
 import java.util.*;
 import java.sql.*;
 import java.io.*;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionStage;
+import scala.compat.java8.FutureConverters;
 import java.util.concurrent.CompletionStage;
 import actors.MarketActor;
 import actors.MarketActorProtocol.*;
+import java.util.Timer;
+import java.util.TimerTask;
 public class UserActorProtocol {
     public static class PlaceOffer {
         public final int maxrate;
@@ -46,7 +52,8 @@ public class UserActorProtocol {
                         cashNeed += num * rate;
                         buyAmount -= num;
                     }
-                }              
+                }    
+                conn.close();          
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
@@ -70,7 +77,17 @@ public class UserActorProtocol {
         }
 
         public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {
-            Patterns.ask(marketActor, new Hold(db, offerId, amount), 1000);
+            try {
+                String res = FutureConverters.toJava(Patterns.ask(marketActor, new Hold(db, offerId, amount), 1000))
+                .thenApply(response -> (String) response).toCompletableFuture().get();
+                System.out.println("back to Hold request");           
+                System.out.println("after 3 sec...");
+                System.out.println(res);
+            }
+             catch (Exception e) {
+                StringWriter sw = new StringWriter();
+                e.printStackTrace(new PrintWriter(sw));
+            }
             return true;
         }
     }
