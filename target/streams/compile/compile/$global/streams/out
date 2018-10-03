@@ -1,2 +1,5 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:72:1: variable offerId might not have been initialized[0m
-[0m[[0m[31merror[0m] [0m[0m                return;[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:45:1: method executeQuery in interface java.sql.Statement cannot be applied to given types;[0m
+[0m[[0m[31merror[0m] [0m[0m  required: java.lang.String[0m
+[0m[[0m[31merror[0m] [0m[0m  found: no arguments[0m
+[0m[[0m[31merror[0m] [0m[0m  reason: actual and formal argument lists differ in length[0m
+[0m[[0m[31merror[0m] [0m[0m                stmt.executeQuery();[0m

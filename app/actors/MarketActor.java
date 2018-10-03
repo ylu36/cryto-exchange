@@ -47,22 +47,7 @@ public class MarketActor extends AbstractActor {
         //     int rate = getTransactionById.rate;
         //     String message = getTransactionById.message;
         //     sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+" " +message, self());
-        // }).match(ConfirmFail.class, confirmFail -> {
-        //     String reply = confirmFail.message.toString();
-        //     sender().tell(reply, self());
         }).build();
     }
-
-    // public boolean canHold(String offerId, int amount) {
-    //     logger.info("try to hold an offer " + offerId + "with amount " + amount);
-    //     System.out.println("try to hold an offer " + offerId + "with amount " + amount);
-    //     if(amount > offerbook.get(offerId).get(1)) {
-    //         System.out.println("error: not enough balance!");
-    //         return false;
-    //     }
-    //     int numLeft = offerbook.get(offerId).get(1) - amount;
-    //     List<Integer> list = Arrays.asList(offerbook.get(offerId).get(0), numLeft);
-    //     offerbook.put(offerId, list);
-    //     return true;
-    // }
+    
 }

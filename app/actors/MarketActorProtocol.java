@@ -47,17 +47,6 @@ public class MarketActorProtocol {
                     }
                 }
             }
-            // update(db, offerId, amount);  
-            // print(db, offerId, amount);
-
-            // get BTC/USD rate
-            int rate;
-            if(offerId == "431671cb")
-                rate = 100;
-            else if(offerId == "16b961ed")
-                rate = 80;
-            else 
-                rate = 50;
         }
     }
     
@@ -80,7 +69,6 @@ public class MarketActorProtocol {
             else 
                 total = 12;
             balance = total - amount;
-            System.out.println("total is " + total + " amount is " + amount);
             System.out.println("set amount to " + balance + " for offerID=" + offerId);
             String query = "UPDATE orderbook SET amount = ? WHERE offerID = ?;";
 

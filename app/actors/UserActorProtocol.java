@@ -30,7 +30,7 @@ public class UserActorProtocol {
             this.balanceUSD = balanceUSD;
             this.debugFlag = debugFlag;
             int cashNeed = 0;
-
+            Connection conn = null;
             // get lowest sell offer
             if(maxrate < 50) {
                 // max rate too low; return error
@@ -39,8 +39,11 @@ public class UserActorProtocol {
             }            
             String query = "SELECT * FROM orderbook ORDER BY rate ASC;";
             try {
-                Connection conn = db.getConnection();
+                conn = db.getConnection();
                 Statement stmt = conn.createStatement();
+                String insertIntoTransaction = "INSERT INTO transactions (message) values('in user place offer');";
+                stmt.executeQuery(insertIntoTransaction);  //NOT WORKING
+                
                 ResultSet rs = stmt.executeQuery(query);
                 
                 while(rs.next() && buyAmount > 0) {
@@ -67,6 +70,8 @@ public class UserActorProtocol {
             } catch (Exception e) {
                 StringWriter sw = new StringWriter();
                 e.printStackTrace(new PrintWriter(sw));
+            } finally {           
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
             }
             message = orders.toString();
             System.out.println(balanceUSD);
