@@ -40,10 +40,13 @@ public class UserActorProtocol {
             String query = "SELECT * FROM orderbook ORDER BY rate ASC;";
             try {
                 conn = db.getConnection();
-                Statement stmt = conn.createStatement();
                 String insertIntoTransaction = "INSERT INTO transactions (message) values('in user place offer');";
-                stmt.executeQuery(insertIntoTransaction);  //NOT WORKING
+
+                // PreparedStatement pstmt = conn.prepareStatement(query);
                 
+                // pstmt.executeUpdate();
+                // // stmt.executeQuery(insertIntoTransaction);  //NOT WORKING
+                Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 
                 while(rs.next() && buyAmount > 0) {

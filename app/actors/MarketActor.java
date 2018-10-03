@@ -23,7 +23,6 @@ public class MarketActor extends AbstractActor {
         return receiveBuilder().match(Hold.class, hold -> {
             logger.info("Hold request received...");
             System.out.println("in hold");
-            // boolean trial = canHold(hold.offerId, hold.amount);
             sender().tell(hold.message, self());
         }).match(Confirm.class, confirm -> {
             logger.info("Confirm request received...");

@@ -54,20 +54,41 @@ public class MarketActorProtocol {
     public static class Confirm {
         public final String offerId;
         public final int amount;
-        int balance, total;
+        
+        public int getCurrentAmount(Database db, String offerId) {
+            Connection conn = null;
+            int total = -1;
+            String query = "SELECT * FROM orderbook WHERE offerID = '" + offerId + "';";
+            try {
+                conn = db.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {       
+                    total = rs.getInt("amount");
+                    System.out.println("currently total amount left is " + total);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (conn != null) {
+                    try {
+                        conn.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return total;
+        }
 
         public Confirm(Database db, String offerId, int amount, boolean debugFlag, boolean noResponseFlag) {
-            
+            int balance;
             this.offerId = offerId;
             this.amount = amount;
+            
             if(debugFlag || noResponseFlag) 
-                return;
-            if(offerId == "431671cb")
-                total = 5;
-            else if(offerId == "16b961ed")
-                total = 2;
-            else 
-                total = 12;
+                return;            
+            total = getCurrentAmount(db, offerId);
             balance = total - amount;
             System.out.println("set amount to " + balance + " for offerID=" + offerId);
             String query = "UPDATE orderbook SET amount = ? WHERE offerID = ?;";
