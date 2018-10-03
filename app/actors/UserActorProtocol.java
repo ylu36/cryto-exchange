@@ -34,8 +34,8 @@ public class UserActorProtocol {
             // get lowest sell offer
             if(maxrate < 50) {
                 // max rate too low; return error
-                message = "max rate too low";   
-                recordTransaction(db, message);
+                message = "max_rate_too_low";   
+                recordTransaction(db, message, 0, 0);     
                 return;
             }            
             String query = "SELECT * FROM orderbook ORDER BY rate ASC;";
@@ -49,8 +49,8 @@ public class UserActorProtocol {
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
                     if(rate > maxrate) {
-                        message = "max rate too low";
-                        recordTransaction(db, message);
+                        message = "max_rate_too_low";
+                        recordTransaction(db, message, 0, 0);     
                         return;
                     }
                     if(amount > 0) {
@@ -62,8 +62,8 @@ public class UserActorProtocol {
                     }
                 }
                 if(buyAmount > 0) {
-                    message = "not enough BTC storage in orderbook";
-                    recordTransaction(db, message);
+                    message = "not_enough_BTC_storage_in_orderbook";
+                    recordTransaction(db, message, 0, 0);     
                     return;
                 }    
                 conn.close();          
@@ -76,34 +76,42 @@ public class UserActorProtocol {
             System.out.println(balanceUSD);
             System.out.println(cashNeed);
             if(cashNeed > balanceUSD) {
-                message = "user has not enough balance";
-                recordTransaction(db, message);
+                message = "no_enough_balance";
+                recordTransaction(db, message, 0, 0);     
                 return;
             }
 
             boolean canHold;
             String id = "";
+            Map<String, Integer> rateChart = new HashMap<>();
+            rateChart.put("1e06381d", 50);
+            rateChart.put("16b961ed", 80);
+            rateChart.put("431671cb", 100);
+
             // send HOLD request to marketActor
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
                 canHold = sendHoldRequest(db, marketActor, id, amount);
-                message = "send HOLD request to market actor with offerID="+id+" and amount="+Integer.toString(amount);
-                recordTransaction(db, message);
+                message = "send_HOLD_request";
+                rate = rateChart.get(id);
                 if(canHold == false) {
                     // can't hold, return error
-                    System.out.println("HOLD times out");
+                    message = "HOLD_times_out";
+                    recordTransaction(db, message, amount, rate);     
                     return;
                 }
+                recordTransaction(db, message, amount, rate);     
             }
             // send CONFIRM request to marketActor
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
-                message = "send CONFIRM request to market actor with offerID="+id+" and amount="+Integer.toString(amount);
+                message = "send_CONFIRM_request"; 
                 sendConfirmRequest(db, marketActor, id, amount);
+                recordTransaction(db, message, amount, rate);     
             }
             message = orders.toString();
         }
@@ -112,9 +120,7 @@ public class UserActorProtocol {
             try {
                 String res = FutureConverters.toJava(Patterns.ask(marketActor, new Hold(db, offerId, amount), 1000))
                 .thenApply(response -> (String) response).toCompletableFuture().get();
-                System.out.println("back to Hold request");           
-                System.out.println("after 3 sec...");
-                System.out.println(res);
+                
                 return true;
             }
              catch (Exception e) {
@@ -126,22 +132,23 @@ public class UserActorProtocol {
         public void sendConfirmRequest(Database db, ActorRef marketActor, String offerId, int amount) {
             try {
                 FutureConverters.toJava(Patterns.ask(marketActor, new Confirm(db, offerId, amount, debugFlag, noResponseFlag), 1000))
-                .thenApply(response -> (String) response).toCompletableFuture();//.get();
-                System.out.println("confirmRequest called");
+                .thenApply(response -> (String) response).toCompletableFuture();
             }
              catch (Exception e) {
                 e.printStackTrace();
             }            
         }
 
-        public void recordTransaction(Database db, String message) {
+        public void recordTransaction(Database db, String message, int amount, int rate) {
             Connection conn = null;
             try {
                 conn = db.getConnection();
-                String insertIntoTransaction = "INSERT INTO transactions (message) values(?);";
+                String insertIntoTransaction = "INSERT INTO transactions (message, amount, rate) values(?,?,?);";
 
                 PreparedStatement pstmt = conn.prepareStatement(insertIntoTransaction);
                 pstmt.setString(1, message);
+                pstmt.setInt(2, amount);
+                pstmt.setInt(3, rate);
                 pstmt.executeUpdate();
             } catch(Exception e) {
                 e.printStackTrace();

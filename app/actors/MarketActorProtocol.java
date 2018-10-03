@@ -31,13 +31,11 @@ public class MarketActorProtocol {
                 ResultSet rs = stmt.executeQuery(query);
                 while(rs.next()) {       
                     total = rs.getInt("amount");
-                }       
-                
+                }                       
                 message = "success";
             } catch (Exception e) {
-                message = "error";
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+                message = "error";                
+                e.printStackTrace();
             } finally {
                 if (conn != null) {
                     try {
@@ -48,8 +46,7 @@ public class MarketActorProtocol {
                 }
             }
         }
-    }
-    
+    }    
     
     public static class Confirm {
         public final String offerId;
@@ -65,7 +62,6 @@ public class MarketActorProtocol {
                 ResultSet rs = stmt.executeQuery(query);
                 while(rs.next()) {       
                     total = rs.getInt("amount");
-                    System.out.println("currently total amount left is " + total);
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -90,7 +86,6 @@ public class MarketActorProtocol {
                 return;            
             int total = getCurrentAmount(db, offerId);
             balance = total - amount;
-            System.out.println("set amount to " + balance + " for offerID=" + offerId);
             String query = "UPDATE orderbook SET amount = ? WHERE offerID = ?;";
 
             try {                        
@@ -108,18 +103,20 @@ public class MarketActorProtocol {
         }
 
         public void print(Database db) {
+            Connection conn = null;
             try {
                 String query = "select * from orderbook;";
-                Connection conn = db.getConnection();
+                conn = db.getConnection();
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 while(rs.next()) {       
                     String s = rs.getString("offerID");
                     System.out.println(s + '\t' + rs.getInt("amount"));
                 }   
-                conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {           
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
             }
         }
     }
@@ -128,7 +125,7 @@ public class MarketActorProtocol {
         List<String> offerIDs;
         public GetSellOffers(Database db) {
             offerIDs = new ArrayList<>();
-            String query = "insert into transactions(message) values('here I am'); SELECT offerID FROM orderbook;";
+            String query = "SELECT offerID FROM orderbook;";
             try {
                 Connection conn = db.getConnection();
                 Statement stmt = conn.createStatement();
@@ -140,8 +137,6 @@ public class MarketActorProtocol {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            // MarketActorProtocol.GetSellOffers hello = new MarketActorProtocol.GetSellOffers(db);
-            // hello.insertIntoTransaction(db, "here I am ");
         }
     }
     public static class GetSellOfferById {
@@ -169,10 +164,10 @@ public class MarketActorProtocol {
 
     public static class GetTransactions {
         List<Integer> transactions;
+        Connection conn = null;
         public GetTransactions(Database db) {
             transactions = new ArrayList<>();
             String query = "SELECT * FROM transactions;";
-            System.out.println("here");
             try {
                 Connection conn = db.getConnection();
                 Statement stmt = conn.createStatement();
@@ -181,42 +176,37 @@ public class MarketActorProtocol {
                     transactions.add(rs.getInt("id"));
                     System.out.println(rs.getString("message"));
                 }
-                conn.close();
             } catch (Exception e) {
                 e.printStackTrace();
+            } finally {           
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
             }
         }
     }
 
     
-    // public static class GetTransactionById {
-    //     int amount;
-    //     int rate;
-    //     String message;
-    //     public GetTransactionById(Database db, int id) {
-    //         String query = "SELECT * FROM transactions where id=" + id + ";";
-
-    //         try {
-    //             Connection conn = db.getConnection();
-    //             Statement stmt = conn.createStatement();
-    //             ResultSet rs = stmt.executeQuery(query);
-    //             while(rs.next()) {
-    //                 amount = rs.getInt("amount");
-    //                 rate = rs.getInt("rate");
-    //             }
-    //             message = "success";
-    //             conn.close();
-    //         } catch (Exception e) {
-    //             e.printStackTrace();
-    //             message = "error";
-    //         }
-    //     }
-    // }
-
-    // public static class ConfirmFail {
-    //     String message;
-    //     public class ConfirmFail() {
-
-    //     }
-    // }
+    public static class GetTransactionById {
+        String message;
+        int rate, amount;
+        public GetTransactionById(Database db, int id) {
+            String query = "SELECT * FROM transactions where id=" + id + ";";
+            Connection conn = null;
+            try {
+                conn = db.getConnection();
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {
+                    message = rs.getString("message");
+                    rate = rs.getInt("rate");
+                    amount = rs.getInt("amount");
+                }
+               
+            } catch (Exception e) {
+                e.printStackTrace();
+                message = "error";
+            } finally {           
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
+            }
+        }
+    }
 }

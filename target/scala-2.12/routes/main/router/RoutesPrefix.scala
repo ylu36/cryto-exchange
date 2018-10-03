@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Tue Oct 02 22:40:24 EDT 2018
+// @DATE:Wed Oct 03 18:33:43 EDT 2018
 
 
 package router {
