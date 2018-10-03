@@ -39,8 +39,8 @@ public class ExchangeController extends Controller {
         this.userActor = system.actorOf(UserActor.getProps());
         this.marketActor = system.actorOf(MarketActor.getProps());
         String dropTable = "DROP TABLE if exists transactions;";
-        String createOrderbook = "CREATE TABLE IF NOT EXISTS orderbook (rate integer, amount integer, offerID PRIMARY KEY);";
-        String createTransactions = "CREATE TABLE IF NOT EXISTS transactions (id integer PRIMARY KEY AUTOINCREMENT, offerID String, amount integer, rate integer);";
+        String createOrderbook = "CREATE TABLE IF NOT EXISTS orderbook (rate integer, amount integer, offerID text PRIMARY KEY);";
+        String createTransactions = "CREATE TABLE IF NOT EXISTS transactions (id integer PRIMARY KEY AUTOINCREMENT, message text);";
         String initialize = "INSERT INTO orderbook (rate, amount, offerID) VALUES (100, 5, '431671cb'), (80, 2, '16b961ed'), (50, 12, '1e06381d');";
         try {
             Connection conn = db.getConnection();
@@ -75,10 +75,10 @@ public class ExchangeController extends Controller {
                 .thenApply(response -> ok((String) response));
     }
 
-    public CompletionStage<Result> gettranactionbyid(Integer id) {   // TODO: not done yet
-        return FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactionById(db, id), 1000))
-                .thenApply(response -> ok((String) response));
-    }
+    // public CompletionStage<Result> gettranactionbyid(Integer id) {   // TODO: not done yet
+    //     return FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactionById(db, id), 1000))
+    //             .thenApply(response -> ok((String) response));
+    // }
 
     public CompletionStage<Result> getselloffers() {
         return FutureConverters.toJava(Patterns.ask(marketActor, new GetSellOffers(db), 1000))
