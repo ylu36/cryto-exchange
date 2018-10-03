@@ -39,6 +39,7 @@ public class ExchangeController extends Controller {
         this.userActor = system.actorOf(UserActor.getProps());
         this.marketActor = system.actorOf(MarketActor.getProps());
         String dropTable = "DROP TABLE if exists transactions;";
+        String dropTable2 = "DROP TABLE IF exists orderbook;";
         String createOrderbook = "CREATE TABLE IF NOT EXISTS orderbook (rate integer, amount integer, offerID text PRIMARY KEY);";
         String createTransactions = "CREATE TABLE IF NOT EXISTS transactions (id integer PRIMARY KEY AUTOINCREMENT, message text);";
         String initialize = "INSERT INTO orderbook (rate, amount, offerID) VALUES (100, 5, '431671cb'), (80, 2, '16b961ed'), (50, 12, '1e06381d');";
@@ -46,6 +47,7 @@ public class ExchangeController extends Controller {
             Connection conn = db.getConnection();
             Statement stmt = conn.createStatement();
             stmt.execute(dropTable);
+            stmt.execute(dropTable2);
             stmt.execute(createOrderbook);
             stmt.execute(createTransactions);
             stmt.execute(initialize);

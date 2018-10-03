@@ -44,7 +44,10 @@ public class UserActorProtocol {
                     offerId = rs.getString("offerID");
                     amount = rs.getInt("amount");
                     rate = rs.getInt("rate");
-                    // System.out.println(offerId+'\t'+amount +'\t'+rate);
+                    if(rate > maxrate) {
+                        message = "max rate too low";
+                        return;
+                    }
                     if(amount > 0) {
                         int num = Math.min(buyAmount, amount);
                         List<Integer> list = Arrays.asList(num, rate);
@@ -52,6 +55,10 @@ public class UserActorProtocol {
                         cashNeed += num * rate;
                         buyAmount -= num;
                     }
+                }
+                if(buyAmount > 0) {
+                    message = "not enough BTC storage in orderbook";
+                    return;
                 }    
                 conn.close();          
             } catch (Exception e) {
@@ -62,18 +69,31 @@ public class UserActorProtocol {
             System.out.println(balanceUSD);
             System.out.println(cashNeed);
             if(cashNeed > balanceUSD) {
-                message = "not enough balance";
+                message = "user has not enough balance";
                 return;
             }
 
+            boolean flag;
+            String id = "";
             // send HOLD request to marketActor
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
-                String id = entry.getKey();
+                id = entry.getKey();
                 int amount = entry.getValue().get(0);
-                sendHoldRequest(db, marketActor, id, amount);
+                flag = sendHoldRequest(db, marketActor, id, amount);
+                if(flag == false) {
+                    // can't hold, return error
+                    System.out.println("HOLD times out");
+                    return;
+                }
             }
-                        
+            // send CONFIRM request to marketActor
+            for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
+            {
+                id = entry.getKey();
+                int amount = entry.getValue().get(0);
+                sendConfirmRequest(db, marketActor, id, amount);
+            }
         }
 
         public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {
@@ -83,12 +103,23 @@ public class UserActorProtocol {
                 System.out.println("back to Hold request");           
                 System.out.println("after 3 sec...");
                 System.out.println(res);
+                return true;
             }
              catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+                e.printStackTrace();
+                return false;
+            }            
+        }
+
+        public void sendConfirmRequest(Database db, ActorRef marketActor, String offerId, int amount) {
+            try {
+                FutureConverters.toJava(Patterns.ask(marketActor, new Confirm(db, offerId, amount), 1000))
+                .thenApply(response -> (String) response).toCompletableFuture();//.get();
+                System.out.println("confirmRequest called");
             }
-            return true;
+             catch (Exception e) {
+                e.printStackTrace();
+            }            
         }
     }
 }

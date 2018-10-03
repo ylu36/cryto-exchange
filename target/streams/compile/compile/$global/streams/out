@@ -1,4 +1,14 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActor.java:48:1: cannot find symbol[0m
-[0m[[0m[31merror[0m] [0m[0m  symbol:   variable message[0m
-[0m[[0m[31merror[0m] [0m[0m  location: variable getTransactionById of type actors.MarketActorProtocol.GetTransactionById[0m
-[0m[[0m[31merror[0m] [0m[0m            String message = getTransactionById.message;[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: illegal start of expression[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: illegal start of expression[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: not a statement[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
