@@ -113,7 +113,8 @@ public class UserActorProtocol {
                 sendConfirmRequest(db, marketActor, id, amount);
                 recordTransaction(db, message, amount, rate);     
             }
-            message = orders.toString();
+            int transaction_id = getLatestTranactionId(db);
+            message = Integer.toString(transaction_id);
         }
 
         public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {
@@ -155,6 +156,25 @@ public class UserActorProtocol {
             } finally {
                 try { conn.close(); } catch (Exception e) { /* ignored */ }
             }
+        }
+
+        private int getLatestTranactionId(Database db) {
+            Connection conn = null;
+            int id = -1;
+            try {
+                conn = db.getConnection();
+                String query = "SELECT * FROM transactions;";
+                Statement stmt = conn.createStatement();
+                ResultSet rs = stmt.executeQuery(query);
+                while(rs.next()) {       
+                    id = rs.getInt("id");
+                } 
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
+            }
+            return id;
         }
     }
 }

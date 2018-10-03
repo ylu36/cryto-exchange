@@ -1,2 +1,2 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:105:1: ')' expected[0m
-[0m[[0m[31merror[0m] [0m[0m                .thenApply(response -> ok(parseGetTransactionById((String) response));[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:117:1: <identifier> expected[0m
+[0m[[0m[31merror[0m] [0m[0m            message = Integer.(transaction_id).toString();[0m

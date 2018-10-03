@@ -113,7 +113,7 @@ public class ExchangeController extends Controller {
 
     public CompletionStage<Result> buy(int maxrate, int amount) {
         return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, marketActor, maxrate, amount, balanceUSD, debugFlag), 1000))
-        .thenApply(response -> ok((String)response));
+        .thenApply(response -> ok(parseBuyResult((String)response)));
     } 
 
     private ObjectNode parseSellOffers(String response) {
@@ -146,5 +146,27 @@ public class ExchangeController extends Controller {
         result.put("amount", response.split(" ")[2]);
         result.put("message", response.split(" ")[0]);
         return result;
+    }
+
+    private ObjectNode parseBuyResult(String response) {
+        ObjectNode result = Json.newObject(); 
+        if(isNumeric(response)) {    
+            result.put("status", "success");
+            result.put("transactionID", response);
+        }
+        else {
+            result.put("status", "error");
+            result.put("message", response);
+        }
+        return result;
+    }
+
+    public static boolean isNumeric(String strNum) {
+        try {
+            double d = Integer.parseInt(strNum);
+        } catch (NumberFormatException | NullPointerException nfe) {
+            return false;
+        }
+        return true;
     }
 }
