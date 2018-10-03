@@ -71,10 +71,8 @@ public class UserActorProtocol {
                 e.printStackTrace();
             } finally {           
                 try { conn.close(); } catch (Exception e) { /* ignored */ }
-            }
+            }            
             
-            System.out.println(balanceUSD);
-            System.out.println(cashNeed);
             if(cashNeed > balanceUSD) {
                 message = "no_enough_balance";
                 recordTransaction(db, message, 0, 0);     
@@ -101,8 +99,7 @@ public class UserActorProtocol {
                     message = "HOLD_times_out";
                     recordTransaction(db, message, amount, rate);     
                     return;
-                }
-                recordTransaction(db, message, amount, rate);     
+                }                
             }
             // send CONFIRM request to marketActor
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
@@ -110,11 +107,18 @@ public class UserActorProtocol {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
                 message = "send_CONFIRM_request"; 
-                sendConfirmRequest(db, marketActor, id, amount);
-                recordTransaction(db, message, amount, rate);     
+                sendConfirmRequest(db, marketActor, id, amount);                    
             }
+            
             int transaction_id = getLatestTranactionId(db);
-            message = Integer.toString(transaction_id);
+            if(noResponseFlag)
+                message = "HOLD_TIMES_OUT";
+            else if(debugFlag)
+                message = "CONFIRM_FAIL";
+            else {
+                recordTransaction(db, message, amount, rate); 
+                message = Integer.toString(transaction_id);
+            }
         }
 
         public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {

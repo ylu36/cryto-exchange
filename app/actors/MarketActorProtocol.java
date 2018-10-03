@@ -98,27 +98,26 @@ public class MarketActorProtocol {
                 conn.close();
             } catch (Exception e) {                
                 e.printStackTrace();
-            }             
-            print(db);
+            }     
         }
 
-        public void print(Database db) {
-            Connection conn = null;
-            try {
-                String query = "select * from orderbook;";
-                conn = db.getConnection();
-                Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery(query);
-                while(rs.next()) {       
-                    String s = rs.getString("offerID");
-                    System.out.println(s + '\t' + rs.getInt("amount"));
-                }   
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {           
-                try { conn.close(); } catch (Exception e) { /* ignored */ }
-            }
-        }
+        // public void print(Database db) {
+        //     Connection conn = null;
+        //     try {
+        //         String query = "select * from orderbook;";
+        //         conn = db.getConnection();
+        //         Statement stmt = conn.createStatement();
+        //         ResultSet rs = stmt.executeQuery(query);
+        //         while(rs.next()) {       
+        //             String s = rs.getString("offerID");
+        //             System.out.println(s + '\t' + rs.getInt("amount"));
+        //         }   
+        //     } catch (Exception e) {
+        //         e.printStackTrace();
+        //     } finally {           
+        //         try { conn.close(); } catch (Exception e) { /* ignored */ }
+        //     }
+        // }
     }
 
     public static class GetSellOffers {

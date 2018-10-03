@@ -1,2 +1,4 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:117:1: <identifier> expected[0m
-[0m[[0m[31merror[0m] [0m[0m            message = Integer.(transaction_id).toString();[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:115:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m                message = "HOLD_TIMES_OUT"[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:117:1: ';' expected[0m
+[0m[[0m[31merror[0m] [0m[0m                message = "CONFIRM_FAIL"[0m
