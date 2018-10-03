@@ -67,9 +67,12 @@ public class MarketActorProtocol {
         public final int amount;
         int balance, total;
 
-        public Confirm(Database db, String offerId, int amount) {
+        public Confirm(Database db, String offerId, int amount, boolean debugFlag, boolean noResponseFlag) {
+            
             this.offerId = offerId;
             this.amount = amount;
+            if(debugFlag || noResponseFlag) 
+                return;
             if(offerId == "431671cb")
                 total = 5;
             else if(offerId == "16b961ed")
@@ -198,6 +201,13 @@ public class MarketActorProtocol {
     //             e.printStackTrace();
     //             message = "error";
     //         }
+    //     }
+    // }
+
+    // public static class ConfirmFail {
+    //     String message;
+    //     public class ConfirmFail() {
+
     //     }
     // }
 }

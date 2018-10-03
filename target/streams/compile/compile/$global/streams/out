@@ -1,14 +1,2 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: illegal start of expression[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: illegal start of expression[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: not a statement[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:95:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m             public void print(Database db, String offerId, int amount) {[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:72:1: variable offerId might not have been initialized[0m
+[0m[[0m[31merror[0m] [0m[0m                return;[0m

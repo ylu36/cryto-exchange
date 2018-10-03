@@ -27,13 +27,15 @@ public class ExchangeController extends Controller {
     final ActorRef userActor, marketActor;
     private static final ALogger logger = Logger.of(ExchangeController.class);
     private static int balanceUSD, balanceBTC;
-
+    boolean debugFlag, noResponseFlag;
     @Inject
 	public ExchangeController(ActorSystem system, Database db) {
         logger.info("initializing exchange controller...");
         System.out.println("init exchangeController...");
         this.system = system;
         this.db = db;
+        debugFlag = false;
+        noResponseFlag = false;
         balanceBTC = 0;
         balanceUSD = 0;
         this.userActor = system.actorOf(UserActor.getProps());
@@ -56,6 +58,29 @@ public class ExchangeController extends Controller {
         }
     }
     
+    /* debug APIs */
+    public Result setdebugconfirmfail() {
+        debugFlag = true;
+        ObjectNode result = Json.newObject();
+        result.put("status", "success");
+        return ok(result);
+    }
+    
+    public Result setdebugconfirmno_response() {
+        noResponseFlag = true;
+        ObjectNode result = Json.newObject();
+        result.put("status", "success");
+        return ok(result);
+    }
+
+    public Result reset() {
+        debugFlag = false;
+        noResponseFlag = false;
+        ObjectNode result = Json.newObject();
+        result.put("status", "success");
+        return ok(result);
+    }
+
     public Result addbalance(Integer amount) {
         balanceUSD += amount;
         ObjectNode result = Json.newObject();
@@ -93,7 +118,7 @@ public class ExchangeController extends Controller {
     }
 
     public CompletionStage<Result> buy(int maxrate, int amount) {
-        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, marketActor, maxrate, amount, balanceUSD), 1000))
+        return FutureConverters.toJava(Patterns.ask(userActor, new PlaceOffer(db, marketActor, maxrate, amount, balanceUSD, debugFlag), 1000))
         .thenApply(response -> ok((String)response));
     } 
 

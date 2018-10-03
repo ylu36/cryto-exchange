@@ -15,3 +15,6 @@ GET     /transactions               controllers.ExchangeController.gettranaction
 GET     /selloffers                 controllers.ExchangeController.getselloffers
 GET     /selloffers/:offerid        controllers.ExchangeController.getsellofferbyid(offerid: String)
 POST    /buy/:maxrate/:amount       controllers.ExchangeController.buy(maxrate: Integer, amount: Integer)
+POST    /debug/confirm_fail         controllers.ExchangeController.setdebugconfirmfail
+POST    /debug/confirm_no_response  controllers.ExchangeController.setdebugconfirmno_response
+POST    /debug/reset                controllers.ExchangeController.reset

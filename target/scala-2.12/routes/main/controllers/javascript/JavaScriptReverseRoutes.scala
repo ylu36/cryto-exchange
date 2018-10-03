@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Mon Oct 01 23:01:50 EDT 2018
+// @DATE:Tue Oct 02 22:40:24 EDT 2018
 
 import play.api.routing.JavaScriptReverseRoute
 
@@ -25,6 +25,16 @@ package controllers.javascript {
       """
         function(offerid0) {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "selloffers/" + encodeURIComponent((""" + implicitly[play.api.mvc.PathBindable[String]].javascriptUnbind + """)("offerid", offerid0))})
+        }
+      """
+    )
+  
+    // @LINE:18
+    def setdebugconfirmfail: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.setdebugconfirmfail",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "debug/confirm_fail"})
         }
       """
     )
@@ -59,6 +69,16 @@ package controllers.javascript {
       """
     )
   
+    // @LINE:19
+    def setdebugconfirmno_response: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.setdebugconfirmno_response",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "debug/confirm_no_response"})
+        }
+      """
+    )
+  
     // @LINE:17
     def buy: JavaScriptReverseRoute = JavaScriptReverseRoute(
       "controllers.ExchangeController.buy",
@@ -75,6 +95,16 @@ package controllers.javascript {
       """
         function() {
           return _wA({method:"GET", url:"""" + _prefix + { _defaultPrefix } + """" + "getbalance"})
+        }
+      """
+    )
+  
+    // @LINE:20
+    def reset: JavaScriptReverseRoute = JavaScriptReverseRoute(
+      "controllers.ExchangeController.reset",
+      """
+        function() {
+          return _wA({method:"POST", url:"""" + _prefix + { _defaultPrefix } + """" + "debug/reset"})
         }
       """
     )

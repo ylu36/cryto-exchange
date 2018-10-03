@@ -23,11 +23,14 @@ public class UserActorProtocol {
         String offerId;
         int amount, rate;
         String message;
-        public PlaceOffer(Database db, ActorRef marketActor, int maxrate, int buyAmount, int balanceUSD) {
+        boolean debugFlag, noResponseFlag;
+        public PlaceOffer(Database db, ActorRef marketActor, int maxrate, int buyAmount, int balanceUSD, boolean debugFlag) {
             this.buyAmount = buyAmount;
             this.maxrate = maxrate;
             this.balanceUSD = balanceUSD;
+            this.debugFlag = debugFlag;
             int cashNeed = 0;
+
             // get lowest sell offer
             if(maxrate < 50) {
                 // max rate too low; return error
@@ -73,15 +76,15 @@ public class UserActorProtocol {
                 return;
             }
 
-            boolean flag;
+            boolean canHold;
             String id = "";
             // send HOLD request to marketActor
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
-                flag = sendHoldRequest(db, marketActor, id, amount);
-                if(flag == false) {
+                canHold = sendHoldRequest(db, marketActor, id, amount);
+                if(canHold == false) {
                     // can't hold, return error
                     System.out.println("HOLD times out");
                     return;
@@ -113,7 +116,7 @@ public class UserActorProtocol {
 
         public void sendConfirmRequest(Database db, ActorRef marketActor, String offerId, int amount) {
             try {
-                FutureConverters.toJava(Patterns.ask(marketActor, new Confirm(db, offerId, amount), 1000))
+                FutureConverters.toJava(Patterns.ask(marketActor, new Confirm(db, offerId, amount, debugFlag, noResponseFlag), 1000))
                 .thenApply(response -> (String) response).toCompletableFuture();//.get();
                 System.out.println("confirmRequest called");
             }

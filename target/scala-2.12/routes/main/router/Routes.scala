@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Mon Oct 01 23:01:50 EDT 2018
+// @DATE:Tue Oct 02 22:40:24 EDT 2018
 
 package router
 
@@ -51,6 +51,9 @@ class Routes(
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers""", """controllers.ExchangeController.getselloffers"""),
     ("""GET""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """selloffers/""" + "$" + """offerid<[^/]+>""", """controllers.ExchangeController.getsellofferbyid(offerid:String)"""),
     ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """buy/""" + "$" + """maxrate<[^/]+>/""" + "$" + """amount<[^/]+>""", """controllers.ExchangeController.buy(maxrate:Integer, amount:Integer)"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """debug/confirm_fail""", """controllers.ExchangeController.setdebugconfirmfail"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """debug/confirm_no_response""", """controllers.ExchangeController.setdebugconfirmno_response"""),
+    ("""POST""", this.prefix + (if(this.prefix.endsWith("/")) "" else "/") + """debug/reset""", """controllers.ExchangeController.reset"""),
     Nil
   ).foldLeft(List.empty[(String,String,String)]) { (s,e) => e.asInstanceOf[Any] match {
     case r @ (_,_,_) => s :+ r.asInstanceOf[(String,String,String)]
@@ -202,6 +205,60 @@ class Routes(
     )
   )
 
+  // @LINE:18
+  private[this] lazy val controllers_ExchangeController_setdebugconfirmfail8_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("debug/confirm_fail")))
+  )
+  private[this] lazy val controllers_ExchangeController_setdebugconfirmfail8_invoker = createInvoker(
+    ExchangeController_2.setdebugconfirmfail,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "setdebugconfirmfail",
+      Nil,
+      "POST",
+      this.prefix + """debug/confirm_fail""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:19
+  private[this] lazy val controllers_ExchangeController_setdebugconfirmno_response9_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("debug/confirm_no_response")))
+  )
+  private[this] lazy val controllers_ExchangeController_setdebugconfirmno_response9_invoker = createInvoker(
+    ExchangeController_2.setdebugconfirmno_response,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "setdebugconfirmno_response",
+      Nil,
+      "POST",
+      this.prefix + """debug/confirm_no_response""",
+      """""",
+      Seq()
+    )
+  )
+
+  // @LINE:20
+  private[this] lazy val controllers_ExchangeController_reset10_route = Route("POST",
+    PathPattern(List(StaticPart(this.prefix), StaticPart(this.defaultPrefix), StaticPart("debug/reset")))
+  )
+  private[this] lazy val controllers_ExchangeController_reset10_invoker = createInvoker(
+    ExchangeController_2.reset,
+    play.api.routing.HandlerDef(this.getClass.getClassLoader,
+      "router",
+      "controllers.ExchangeController",
+      "reset",
+      Nil,
+      "POST",
+      this.prefix + """debug/reset""",
+      """""",
+      Seq()
+    )
+  )
+
 
   def routes: PartialFunction[RequestHeader, Handler] = {
   
@@ -251,6 +308,24 @@ class Routes(
     case controllers_ExchangeController_buy7_route(params@_) =>
       call(params.fromPath[Integer]("maxrate", None), params.fromPath[Integer]("amount", None)) { (maxrate, amount) =>
         controllers_ExchangeController_buy7_invoker.call(ExchangeController_2.buy(maxrate, amount))
+      }
+  
+    // @LINE:18
+    case controllers_ExchangeController_setdebugconfirmfail8_route(params@_) =>
+      call { 
+        controllers_ExchangeController_setdebugconfirmfail8_invoker.call(ExchangeController_2.setdebugconfirmfail)
+      }
+  
+    // @LINE:19
+    case controllers_ExchangeController_setdebugconfirmno_response9_route(params@_) =>
+      call { 
+        controllers_ExchangeController_setdebugconfirmno_response9_invoker.call(ExchangeController_2.setdebugconfirmno_response)
+      }
+  
+    // @LINE:20
+    case controllers_ExchangeController_reset10_route(params@_) =>
+      call { 
+        controllers_ExchangeController_reset10_invoker.call(ExchangeController_2.reset)
       }
   }
 }

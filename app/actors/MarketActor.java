@@ -47,6 +47,9 @@ public class MarketActor extends AbstractActor {
         //     int rate = getTransactionById.rate;
         //     String message = getTransactionById.message;
         //     sender().tell(Integer.toString(rate)+" "+Integer.toString(amount)+" " +message, self());
+        // }).match(ConfirmFail.class, confirmFail -> {
+        //     String reply = confirmFail.message.toString();
+        //     sender().tell(reply, self());
         }).build();
     }
 

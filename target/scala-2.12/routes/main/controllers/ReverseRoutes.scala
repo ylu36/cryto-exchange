@@ -1,6 +1,6 @@
 // @GENERATOR:play-routes-compiler
 // @SOURCE:/home/jamesl/Desktop/csc750proj2/cryto-exchange/conf/routes
-// @DATE:Mon Oct 01 23:01:50 EDT 2018
+// @DATE:Tue Oct 02 22:40:24 EDT 2018
 
 import play.api.mvc.Call
 
@@ -24,6 +24,12 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "selloffers/" + play.core.routing.dynamicString(implicitly[play.api.mvc.PathBindable[String]].unbind("offerid", offerid)))
     }
   
+    // @LINE:18
+    def setdebugconfirmfail(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "debug/confirm_fail")
+    }
+  
     // @LINE:13
     def gettranactions(): Call = {
       
@@ -42,6 +48,12 @@ package controllers {
       Call("GET", _prefix + { _defaultPrefix } + "selloffers")
     }
   
+    // @LINE:19
+    def setdebugconfirmno_response(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "debug/confirm_no_response")
+    }
+  
     // @LINE:17
     def buy(maxrate:Integer, amount:Integer): Call = {
       
@@ -52,6 +64,12 @@ package controllers {
     def getbalance(): Call = {
       
       Call("GET", _prefix + { _defaultPrefix } + "getbalance")
+    }
+  
+    // @LINE:20
+    def reset(): Call = {
+      
+      Call("POST", _prefix + { _defaultPrefix } + "debug/reset")
     }
   
   }
