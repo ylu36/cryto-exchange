@@ -88,7 +88,7 @@ public class MarketActorProtocol {
             
             if(debugFlag || noResponseFlag) 
                 return;            
-            total = getCurrentAmount(db, offerId);
+            int total = getCurrentAmount(db, offerId);
             balance = total - amount;
             System.out.println("set amount to " + balance + " for offerID=" + offerId);
             String query = "UPDATE orderbook SET amount = ? WHERE offerID = ?;";

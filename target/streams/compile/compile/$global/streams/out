@@ -1,8 +1,12 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:48:1: cannot find symbol[0m
-[0m[[0m[31merror[0m] [0m[0m  symbol:   variable stmt[0m
-[0m[[0m[31merror[0m] [0m[0m  location: class actors.UserActorProtocol.PlaceOffer[0m
-[0m[[0m[31merror[0m] [0m[0m                stmt.executeQuery(insertIntoTransaction);  //NOT WORKING[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:50:1: cannot find symbol[0m
-[0m[[0m[31merror[0m] [0m[0m  symbol:   variable stmt[0m
-[0m[[0m[31merror[0m] [0m[0m  location: class actors.UserActorProtocol.PlaceOffer[0m
-[0m[[0m[31merror[0m] [0m[0m                ResultSet rs = stmt.executeQuery(query);[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:91:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   variable total[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class actors.MarketActorProtocol.Confirm[0m
+[0m[[0m[31merror[0m] [0m[0m            total = getCurrentAmount(db, offerId);[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:92:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   variable total[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class actors.MarketActorProtocol.Confirm[0m
+[0m[[0m[31merror[0m] [0m[0m            balance = total - amount;[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/MarketActorProtocol.java:97:1: cannot find symbol[0m
+[0m[[0m[31merror[0m] [0m[0m  symbol:   variable total[0m
+[0m[[0m[31merror[0m] [0m[0m  location: class actors.MarketActorProtocol.Confirm[0m
+[0m[[0m[31merror[0m] [0m[0m                balance = total-amount;[0m

@@ -34,18 +34,13 @@ public class UserActorProtocol {
             // get lowest sell offer
             if(maxrate < 50) {
                 // max rate too low; return error
-                message = "max rate too low";
+                message = "max rate too low";   
+                recordTransaction(db, message);
                 return;
             }            
             String query = "SELECT * FROM orderbook ORDER BY rate ASC;";
             try {
                 conn = db.getConnection();
-                String insertIntoTransaction = "INSERT INTO transactions (message) values('in user place offer');";
-
-                // PreparedStatement pstmt = conn.prepareStatement(query);
-                
-                // pstmt.executeUpdate();
-                // // stmt.executeQuery(insertIntoTransaction);  //NOT WORKING
                 Statement stmt = conn.createStatement();
                 ResultSet rs = stmt.executeQuery(query);
                 
@@ -55,6 +50,7 @@ public class UserActorProtocol {
                     rate = rs.getInt("rate");
                     if(rate > maxrate) {
                         message = "max rate too low";
+                        recordTransaction(db, message);
                         return;
                     }
                     if(amount > 0) {
@@ -67,20 +63,21 @@ public class UserActorProtocol {
                 }
                 if(buyAmount > 0) {
                     message = "not enough BTC storage in orderbook";
+                    recordTransaction(db, message);
                     return;
                 }    
                 conn.close();          
-            } catch (Exception e) {
-                StringWriter sw = new StringWriter();
-                e.printStackTrace(new PrintWriter(sw));
+            } catch (Exception e) {                
+                e.printStackTrace();
             } finally {           
                 try { conn.close(); } catch (Exception e) { /* ignored */ }
             }
-            message = orders.toString();
+            
             System.out.println(balanceUSD);
             System.out.println(cashNeed);
             if(cashNeed > balanceUSD) {
                 message = "user has not enough balance";
+                recordTransaction(db, message);
                 return;
             }
 
@@ -92,6 +89,8 @@ public class UserActorProtocol {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
                 canHold = sendHoldRequest(db, marketActor, id, amount);
+                message = "send HOLD request to market actor with offerID="+id+" and amount="+Integer.toString(amount);
+                recordTransaction(db, message);
                 if(canHold == false) {
                     // can't hold, return error
                     System.out.println("HOLD times out");
@@ -103,8 +102,10 @@ public class UserActorProtocol {
             {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
+                message = "send CONFIRM request to market actor with offerID="+id+" and amount="+Integer.toString(amount);
                 sendConfirmRequest(db, marketActor, id, amount);
             }
+            message = orders.toString();
         }
 
         public boolean sendHoldRequest(Database db, ActorRef marketActor, String offerId, int amount) {
@@ -131,6 +132,22 @@ public class UserActorProtocol {
              catch (Exception e) {
                 e.printStackTrace();
             }            
+        }
+
+        public void recordTransaction(Database db, String message) {
+            Connection conn = null;
+            try {
+                conn = db.getConnection();
+                String insertIntoTransaction = "INSERT INTO transactions (message) values(?);";
+
+                PreparedStatement pstmt = conn.prepareStatement(insertIntoTransaction);
+                pstmt.setString(1, message);
+                pstmt.executeUpdate();
+            } catch(Exception e) {
+                e.printStackTrace();
+            } finally {
+                try { conn.close(); } catch (Exception e) { /* ignored */ }
+            }
         }
     }
 }
