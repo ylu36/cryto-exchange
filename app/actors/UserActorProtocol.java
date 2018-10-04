@@ -95,13 +95,14 @@ public class UserActorProtocol {
                 if(canHold == false) {
                     // can't hold, return error
                     message = "HOLD_times_out";
-                    recordTransaction(db, message, amount, rate);     
                     return;
                 }                
             }
             // send CONFIRM request to marketActor           
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
+                if(noResponseFlag || debugFlag)
+                    break;
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
                 totalAmount += amount;
@@ -111,13 +112,14 @@ public class UserActorProtocol {
                 sendConfirmRequest(db, marketActor, id, amount);                    
             }
             System.out.println(totalAmount + " " + totalCost);
-            int transaction_id = getLatestTranactionId(db);
             if(noResponseFlag)
                 message = "HOLD_TIMES_OUT";
             else if(debugFlag)
                 message = "CONFIRM_FAIL";
             else {
                 recordTransaction(db, message, totalAmount, totalCost); 
+                int transaction_id = getLatestTranactionId(db);
+
                 message = Integer.toString(transaction_id);
             }
         }
