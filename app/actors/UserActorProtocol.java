@@ -24,18 +24,19 @@ public class UserActorProtocol {
         int amount, rate;
         String message;
         boolean debugFlag, noResponseFlag;
+        int totalAmount, totalCost;
         public PlaceOffer(Database db, ActorRef marketActor, int maxrate, int buyAmount, int balanceUSD, boolean debugFlag) {
             this.buyAmount = buyAmount;
             this.maxrate = maxrate;
             this.balanceUSD = balanceUSD;
             this.debugFlag = debugFlag;
             int cashNeed = 0;
+            totalAmount = totalCost = 0;
             Connection conn = null;
             // get lowest sell offer
             if(maxrate < 50) {
                 // max rate too low; return error
                 message = "max_rate_too_low";   
-                recordTransaction(db, message, 0, 0);     
                 return;
             }            
             String query = "SELECT * FROM orderbook ORDER BY rate ASC;";
@@ -50,7 +51,6 @@ public class UserActorProtocol {
                     rate = rs.getInt("rate");
                     if(rate > maxrate) {
                         message = "max_rate_too_low";
-                        recordTransaction(db, message, 0, 0);     
                         return;
                     }
                     if(amount > 0) {
@@ -63,7 +63,6 @@ public class UserActorProtocol {
                 }
                 if(buyAmount > 0) {
                     message = "not_enough_BTC_storage_in_orderbook";
-                    recordTransaction(db, message, 0, 0);     
                     return;
                 }    
                 conn.close();          
@@ -75,7 +74,6 @@ public class UserActorProtocol {
             
             if(cashNeed > balanceUSD) {
                 message = "no_enough_balance";
-                recordTransaction(db, message, 0, 0);     
                 return;
             }
 
@@ -101,22 +99,25 @@ public class UserActorProtocol {
                     return;
                 }                
             }
-            // send CONFIRM request to marketActor
+            // send CONFIRM request to marketActor           
             for (Map.Entry<String, List<Integer>> entry : orders.entrySet())
             {
                 id = entry.getKey();
                 int amount = entry.getValue().get(0);
+                totalAmount += amount;
+                totalCost += entry.getValue().get(1) * amount;
+                System.out.println(amount + " " + entry.getValue());
                 message = "send_CONFIRM_request"; 
                 sendConfirmRequest(db, marketActor, id, amount);                    
             }
-            
+            System.out.println(totalAmount + " " + totalCost);
             int transaction_id = getLatestTranactionId(db);
             if(noResponseFlag)
                 message = "HOLD_TIMES_OUT";
             else if(debugFlag)
                 message = "CONFIRM_FAIL";
             else {
-                recordTransaction(db, message, amount, rate); 
+                recordTransaction(db, message, totalAmount, totalCost); 
                 message = Integer.toString(transaction_id);
             }
         }

@@ -1,6 +1,7 @@
 package actors;
 
 import java.util.*;
+import java.lang.*; 
 import akka.actor.AbstractActor;
 import akka.actor.Props;
 import akka.pattern.Patterns;
@@ -25,7 +26,7 @@ public class UserActor extends AbstractActor {
         return receiveBuilder()
         .match(PlaceOffer.class, placeOffer-> {
             String reply = placeOffer.message;
-            sender().tell(reply, self());
+            sender().tell(reply +  " " + String.valueOf(placeOffer.totalAmount) + " " + String.valueOf(placeOffer.totalCost), self());
         }).build();
     }
 }

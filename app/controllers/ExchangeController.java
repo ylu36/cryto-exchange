@@ -96,7 +96,7 @@ public class ExchangeController extends Controller {
                 .thenApply(response -> ok((String) response));
     }
 
-    public CompletionStage<Result> gettranactionbyid(Integer id) {   
+    public CompletionStage<Result> gettranactionbyid(Integer id) {           
         return FutureConverters.toJava(Patterns.ask(marketActor, new GetTransactionById(db, id), 1000))
                 .thenApply(response -> ok(parseGetTransactionById((String) response)));
     }
@@ -140,7 +140,7 @@ public class ExchangeController extends Controller {
 
     private ObjectNode parseGetTransactionById(String response) {
         ObjectNode result = Json.newObject();  
-    
+        
         result.put("status", "success");
         result.put("rate", response.split(" ")[1]);
         result.put("amount", response.split(" ")[2]);
@@ -150,23 +150,16 @@ public class ExchangeController extends Controller {
 
     private ObjectNode parseBuyResult(String response) {
         ObjectNode result = Json.newObject(); 
-        if(isNumeric(response)) {    
+        if(response.indexOf(" ") != -1) {    
+            balanceBTC += Integer.valueOf(response.split(" ")[1]);
+            balanceUSD -= Integer.valueOf(response.split(" ")[2]);
             result.put("status", "success");
-            result.put("transactionID", response);
+            result.put("transactionID", response.split(" ")[0]);
         }
         else {
             result.put("status", "error");
             result.put("message", response);
         }
         return result;
-    }
-
-    public static boolean isNumeric(String strNum) {
-        try {
-            double d = Integer.parseInt(strNum);
-        } catch (NumberFormatException | NullPointerException nfe) {
-            return false;
-        }
-        return true;
     }
 }

@@ -1,4 +1,6 @@
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:115:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m                message = "HOLD_TIMES_OUT"[0m
-[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/actors/UserActorProtocol.java:117:1: ';' expected[0m
-[0m[[0m[31merror[0m] [0m[0m                message = "CONFIRM_FAIL"[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:154:1: incompatible types: java.lang.String cannot be converted to int[0m
+[0m[[0m[31merror[0m] [0m[0m            balanceBTC += response.split(" ")[1];[0m
+[0m[[0m[31merror[0m] [0m[0m/home/jamesl/Desktop/csc750proj2/cryto-exchange/app/controllers/ExchangeController.java:155:1: bad operand types for binary operator '-'[0m
+[0m[[0m[31merror[0m] [0m[0m  first type:  int[0m
+[0m[[0m[31merror[0m] [0m[0m  second type: java.lang.String[0m
+[0m[[0m[31merror[0m] [0m[0m            balanceUSD -= response.split(" ")[2];[0m

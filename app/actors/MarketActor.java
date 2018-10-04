@@ -19,8 +19,6 @@ public class MarketActor extends AbstractActor {
 	public Receive createReceive() {
         return receiveBuilder().match(Hold.class, hold -> {
             sender().tell(hold.message, self());
-        }).match(Confirm.class, confirm -> {
-            System.out.println("in confirm");
         }).match(GetSellOfferById.class, getSellOfferById -> {
             int rate = getSellOfferById.rate;
             int amount = getSellOfferById.amount;
@@ -34,6 +32,8 @@ public class MarketActor extends AbstractActor {
             sender().tell(reply, self());
         }).match(GetTransactionById.class, getTransactionById -> {
             String message = getTransactionById.message;
+            // String totalCost = Integer.toString(getTransactionById.totalCost);
+            // String totalAmount = Integer.toString(getTransactionById.totalAmount);
             String rate = Integer.toString(getTransactionById.rate);
             String amount = Integer.toString(getTransactionById.amount);
             sender().tell(message + " " + rate + " " + amount, self());
